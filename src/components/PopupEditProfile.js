@@ -1,12 +1,15 @@
-import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
-function EditProfilePopup({ isOpen, onClose }) {
+function PopupEditProfile({ isOpen, onClose }) {
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log('profile')
+  }
   return (
     <PopupWithForm
-      name="edit-profile"
+      name="edit"
       title="Редактировать профиль"
-      buttonText="Сохранить"
+      textBtn="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
@@ -36,4 +39,4 @@ function EditProfilePopup({ isOpen, onClose }) {
   );
 }
 
-export default EditProfilePopup;
+export default PopupEditProfile;

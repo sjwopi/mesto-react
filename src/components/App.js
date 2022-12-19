@@ -41,15 +41,15 @@ function App() {
       <Footer />
 
       <PopupEditProfile
-        isOpen={false}
+        isOpen={isPopupEditProfileOpen}
         onClose={closeAllPopups}
       />
       <PopupEditAvatar
-        isOpen={false}
+        isOpen={isPopupEditAvatarOpen}
         onClose={closeAllPopups}
       />
       <PopupAddPlace
-        isOpen={false}
+        isOpen={isPopupAddPlaceOpen}
         onClose={closeAllPopups}
       />
 

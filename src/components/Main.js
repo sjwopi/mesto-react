@@ -1,6 +1,6 @@
 import ProfileDefaulAvatar from '../images/avatar.png';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar}) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar }) {
   return (
     <main className="content">
       <section className="profile">
