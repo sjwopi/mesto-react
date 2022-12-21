@@ -5,12 +5,15 @@ import Footer from './Footer.js';
 import PopupAddPlace from './PopupAddPlace.js'
 import PopupEditProfile from './PopupEditProfile.js';
 import PopupEditAvatar from './PopupEditAvatar.js';
+import Card from './Card.js';
+import CardPopup from './CardPopup.js';
 import PopupConfirmAction from './PopupConfirmAction.js';
 
 function App() {
   const [isPopupEditAvatarOpen, setIsPopupEditAvatarOpen] = React.useState(false);
   const [isPopupEditProfileOpen, setIsPopupEditProfileOpen] = React.useState(false);
   const [isPopupAddPlaceOpen, setIsPopupAddPlaceOpen] = React.useState(false);
+  const [isCardPopupOpen, setIsCardPopupOpen] = React.useState(false)
   const [isPopupConfirmActionOpen, setIsPopupConfirmActionOpen] = React.useState(false);
 
   function handleEditAvatarClick() {
@@ -25,7 +28,10 @@ function App() {
     setIsPopupAddPlaceOpen(true);
   }
   function handleDeleteCard() {
-    setIsPopupConfirmActionOpen(true)
+    setIsPopupConfirmActionOpen(true);
+  }
+  function handleOpenCardClick() {
+    setIsCardPopupOpen(true);
   }
 
   function closeAllPopups() {
@@ -42,6 +48,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onDelete={handleDeleteCard}
         onClose={closeAllPopups}
       />
       <Footer />
@@ -62,36 +69,17 @@ function App() {
         isOpen={isPopupConfirmActionOpen}
         onClose={closeAllPopups}
       />
-
-      
-
-      <div className="popup popup-card">
-        <div className="popup-card__container">
-          <h2 className="popup-card__text"></h2>
-          <img src="#" alt="#" className="popup-card__img" />
-          <button
-            type="button"
-            className="popup__close-btn popup-card__close-btn"
-          ></button>
-        </div>
-      </div>
-
-
-      <template id="card">
-        <li className="elements__list-item">
-          <article className="element">
-            <img src="#" alt="публикация" className="element__img" />
-            <button type="button" className="element__delete-btn"></button>
-            <div className="element__caption">
-              <h2 className="element__text"></h2>
-              <div className="element__like-container">
-                <button type="button" className="element__like"></button>
-                <p className="element__like-count"></p>
-              </div>
-            </div>
-          </article>
-        </li>
-      </template>
+      <Card
+        onCardOpen={handleOpenCardClick}
+        src={'#'}
+        name={'name'}
+      />
+      <CardPopup
+        isOpen={isCardPopupOpen}
+        onClose={closeAllPopups}
+        src={'#'}
+        name={'name'}
+      />
     </>
   );
 }

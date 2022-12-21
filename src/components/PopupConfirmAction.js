@@ -3,7 +3,7 @@ import PopupWithForm from './PopupWithForm.js';
 function PopupConfirmAction({ isOpen, onClose }) {
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('newPlace')
+    console.log('deletePlace')
   }
   return (
     <PopupWithForm
