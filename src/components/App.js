@@ -5,11 +5,13 @@ import Footer from './Footer.js';
 import PopupAddPlace from './PopupAddPlace.js'
 import PopupEditProfile from './PopupEditProfile.js';
 import PopupEditAvatar from './PopupEditAvatar.js';
+import PopupConfirmAction from './PopupConfirmAction.js';
 
 function App() {
   const [isPopupEditAvatarOpen, setIsPopupEditAvatarOpen] = React.useState(false);
   const [isPopupEditProfileOpen, setIsPopupEditProfileOpen] = React.useState(false);
   const [isPopupAddPlaceOpen, setIsPopupAddPlaceOpen] = React.useState(false);
+  const [isPopupConfirmActionOpen, setIsPopupConfirmActionOpen] = React.useState(false);
 
   function handleEditAvatarClick() {
     setIsPopupEditAvatarOpen(true);
@@ -22,11 +24,15 @@ function App() {
   function handleAddPlaceClick() {
     setIsPopupAddPlaceOpen(true);
   }
+  function handleDeleteCard() {
+    setIsPopupConfirmActionOpen(true)
+  }
 
   function closeAllPopups() {
     setIsPopupEditAvatarOpen(false);
     setIsPopupEditProfileOpen(false);
     setIsPopupAddPlaceOpen(false);
+    setIsPopupConfirmActionOpen(false);
   }
 
   return (
@@ -52,6 +58,10 @@ function App() {
         isOpen={isPopupAddPlaceOpen}
         onClose={closeAllPopups}
       />
+      <PopupConfirmAction
+        isOpen={isPopupConfirmActionOpen}
+        onClose={closeAllPopups}
+      />
 
       
 
@@ -66,23 +76,6 @@ function App() {
         </div>
       </div>
 
-      <div className="popup popup-delete">
-        <div className="popup__container popup__container_delete">
-          <h2 className="popup__title popup__title_delete">Вы уверены?</h2>
-          <form noValidate>
-            <input
-              name="deelte-button"
-              type="submit"
-              value="Удалить"
-              className="popup__save-form popup-delete__btn"
-            />
-          </form>
-          <button
-            type="button"
-            className="popup__close-btn popup-delete__close-btn"
-          ></button>
-        </div>
-      </div>
 
       <template id="card">
         <li className="elements__list-item">
