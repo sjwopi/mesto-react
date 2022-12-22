@@ -15,4 +15,4 @@ function Card({ onCardOpen, src, name}) {
         </li>
   );
 }
-export default CardPopup;
+export default Card;

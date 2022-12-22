@@ -1,9 +1,25 @@
+import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
+import api from './Api.js'
 
-function PopupEditProfile({ isOpen, onClose }) {
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log('profile')
+function PopupEditProfile({ isOpen, onClose, onCloseOverlay }) {
+  const [name, setName] = React.useState('')
+  const [about, setAbout] = React.useState('')
+
+  function handleNameChange(evt) {
+    setName(evt.target.value)
+  }
+  function handleAboutChange(evt) {
+    setAbout(evt.target.value)
+  }
+  function handleUpdateProfile(userInfo) {
+    api
+      .editUserInfo(userInfo)
+      .then(() => {
+        
+        onClose();
+      })
+      .catch(console.error);
   }
   return (
     <PopupWithForm
@@ -12,7 +28,8 @@ function PopupEditProfile({ isOpen, onClose }) {
       textBtn="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={handleSubmit}
+      onCloseOverlay={onCloseOverlay}
+      onSubmit={() => {handleUpdateProfile({name, about})}}
     >
       <input
         id="username"
@@ -22,6 +39,7 @@ function PopupEditProfile({ isOpen, onClose }) {
         required
         minLength={2}
         maxLength={40}
+        onInput={handleNameChange}
       />
       <span className="form__input-error username-error"></span>
 
@@ -33,6 +51,7 @@ function PopupEditProfile({ isOpen, onClose }) {
         required
         minLength={2}
         maxLength={200}
+        onInput={handleAboutChange}
       />
       <span className="form__input-error description-error"></span>
     </PopupWithForm>

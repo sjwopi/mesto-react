@@ -4,11 +4,15 @@ function PopupWithForm({
   textBtn,
   isOpen,
   onClose,
+  onCloseOverlay,
   children,
-  onSubmit
+  onSubmit,
 }) {
   return (
-    <div className={`popup popup-${name}` + (isOpen && ' popup_opened')}>
+    <div
+      className={`popup popup-${name}` + (isOpen && ' popup_opened')}
+      onClick={onCloseOverlay}
+    >
       <div className={`popup__container popup__container_${name}`}>
         <h2 className="popup__title">{title}</h2>
 
