@@ -5,7 +5,6 @@ import Footer from './Footer.js';
 import PopupAddPlace from './PopupAddPlace.js';
 import PopupEditProfile from './PopupEditProfile.js';
 import PopupEditAvatar from './PopupEditAvatar.js';
-import Card from './Card.js';
 import CardPopup from './CardPopup.js';
 import PopupConfirmAction from './PopupConfirmAction.js';
 
@@ -30,7 +29,7 @@ function App() {
   function handleAddPlaceClick() {
     setIsPopupAddPlaceOpen(true);
   }
-  function handleDeleteCard() {
+  function handlePopupDeleteCard() {
     setIsPopupConfirmActionOpen(true);
   }
   function handleOpenCardClick() {
@@ -63,6 +62,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleOpenCardClick}
       />
       <Footer />
 
@@ -87,7 +87,6 @@ function App() {
         onClose={closeAllPopups}
         onCloseOverlay={closeCLickOverlay}
       />
-      <Card onCardOpen={handleOpenCardClick} src={'#'} name={'name'} />
       <CardPopup
         isOpen={isCardPopupOpen}
         onClose={closeAllPopups}

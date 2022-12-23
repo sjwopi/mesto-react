@@ -1,4 +1,4 @@
-import headerLogo from '../images/logo.svg'
+import headerLogo from '../images/logo.svg';
 function Header() {
   return (
     <header className="header">
@@ -6,4 +6,4 @@ function Header() {
     </header>
   );
 }
-export default Header
+export default Header;
