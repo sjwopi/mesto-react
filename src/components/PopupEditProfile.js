@@ -42,7 +42,6 @@ function PopupEditProfile({ isOpen, onClose, onCloseOverlay }) {
         onInput={handleNameChange}
       />
       <span className="form__input-error username-error"></span>
-
       <input
         id="description"
         name="description"
@@ -57,5 +56,4 @@ function PopupEditProfile({ isOpen, onClose, onCloseOverlay }) {
     </PopupWithForm>
   );
 }
-
 export default PopupEditProfile;

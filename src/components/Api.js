@@ -17,11 +17,11 @@ class Api {
     })
       .then((res) => this._getResponse(res))
   }
-  createCard(data) {
+  createCard({name, link}) {
     return fetch(`${this._baseUrl}cards`, {
       method: 'POST',
       headers: this._headers,
-      body: JSON.stringify({ name: data.name, link: data.url })
+      body: JSON.stringify({ name, link })
     })
       .then(res => this._getResponse(res));
   }
@@ -65,11 +65,11 @@ class Api {
       .then(res => this._getResponse(res));
   }
 
-  editAvatar(data) {
+  editAvatar(avatar) {
     return fetch(`${this._baseUrl}users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({ avatar: data.urlavatar })
+      body: JSON.stringify({ avatar })
     })
       .then((res) => this._getResponse(res))
   }

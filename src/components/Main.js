@@ -1,17 +1,34 @@
 import React from 'react';
 import ProfileDefaulAvatar from '../images/avatar.png';
 import api from './Api.js';
+import Card from './Card.js';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+function Main({
+  cards,
+  onEditProfile,
+  onEditAvatar,
+  onAddPlace,
+  onCardOpen,
+  onCardLike,
+  onDeleteClick,
+}) {
   const [userAvatar, setUserAvatar] = React.useState(ProfileDefaulAvatar);
-  const [userName, setUserName] = React.useState(api.getUserInfo().name);
-  const [userDescription, setUserDescription] = React.useState(api.getUserInfo().about);
-  api.getUserInfo()
-    .then(res => {
-      setUserAvatar(res.avatar)
-      setUserName(res.name)
-      setUserDescription(res.about)
-    })
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [user, setUser] = React.useState({})
+  
+  React.useEffect(() => {
+    api
+      .getUserInfo()
+      .then((res) => {
+        setUserAvatar(res.avatar);
+        setUserName(res.name);
+        setUserDescription(res.about);
+        setUser(res)
+      })
+      .catch(console.error)
+  }, []);
+  
   return (
     <main className="content">
       <section className="profile">
@@ -41,7 +58,18 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
       </section>
 
       <section className="elements">
-        <ul className="elements__list"></ul>
+        <ul className="elements__list">
+          {cards.map((card) => (
+            <Card
+              key={card._id}
+              user={user}
+              card={card}
+              onCardOpen={onCardOpen}
+              onCardLike={onCardLike}
+              onDeleteClick={onDeleteClick}
+            />
+          ))}
+        </ul>
       </section>
     </main>
   );

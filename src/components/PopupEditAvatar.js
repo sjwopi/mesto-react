@@ -1,9 +1,20 @@
+import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
+import api from './Api.js'
 
-function PopupEditAvatar({ isOpen, onClose }) {
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log('avatar')
+function PopupEditAvatar({ isOpen, onClose, onCloseOverlay }) {
+  const [avatar, setAvatar] = React.useState('')
+  
+  function handleAvatarChange(evt) {
+    setAvatar(evt.target.value)
+  }
+  function handleUpdateAvatar() {
+    api
+      .editAvatar(avatar)
+      .then(() => {
+        onClose();
+      })
+      .catch(console.error);
   }
   return (
     <PopupWithForm
@@ -12,7 +23,8 @@ function PopupEditAvatar({ isOpen, onClose }) {
       textBtn="Сохранить"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={handleSubmit}
+      onCloseOverlay={onCloseOverlay}
+      onSubmit={handleUpdateAvatar}
     >
       <input
         id="urlavatar"
@@ -22,7 +34,7 @@ function PopupEditAvatar({ isOpen, onClose }) {
         className="popup__input popup-avatar__input-link"
         required
         minLength={2}
-        maxLength={30}
+        onInput={handleAvatarChange}
       />
       <span className="form__input-error urlavatar-error"></span>
     </PopupWithForm>
