@@ -4,7 +4,7 @@ import api from './Api.js'
 
 function PopupEditAvatar({ isOpen, onClose, onCloseOverlay }) {
   const [avatar, setAvatar] = React.useState('')
-  
+
   function handleAvatarChange(evt) {
     setAvatar(evt.target.value)
   }

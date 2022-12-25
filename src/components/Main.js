@@ -4,20 +4,26 @@ import api from './Api.js';
 import Card from './Card.js';
 
 function Main({
-  cards,
   onEditProfile,
   onEditAvatar,
   onAddPlace,
   onCardOpen,
   onCardLike,
-  onDeleteClick,
+  onDeleteClick
 }) {
   const [userAvatar, setUserAvatar] = React.useState(ProfileDefaulAvatar);
   const [userName, setUserName] = React.useState('');
   const [userDescription, setUserDescription] = React.useState('');
   const [user, setUser] = React.useState({})
-  
+  const [cards, setCards] = React.useState([])
+
   React.useEffect(() => {
+    api
+    .getInitialCards()
+    .then((res) => {
+      setCards(res);
+    })
+    .catch(console.error);
     api
       .getUserInfo()
       .then((res) => {
@@ -28,7 +34,7 @@ function Main({
       })
       .catch(console.error)
   }, []);
-  
+
   return (
     <main className="content">
       <section className="profile">

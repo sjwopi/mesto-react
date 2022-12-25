@@ -3,29 +3,15 @@ import api from './Api.js'
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
-import PopupAddPlace from './PopupAddPlace.js';
-import PopupEditProfile from './PopupEditProfile.js';
-import PopupEditAvatar from './PopupEditAvatar.js';
+import PopupWithForm from './PopupWithForm.js'
 import ImagePopup from './ImagePopup.js';
-import PopupConfirmAction from './PopupConfirmAction.js';
 
 function App() {
   const [isPopupEditAvatarOpen, setIsPopupEditAvatarOpen] = React.useState(false);
   const [isPopupEditProfileOpen, setIsPopupEditProfileOpen] = React.useState(false);
   const [isPopupAddPlaceOpen, setIsPopupAddPlaceOpen] = React.useState(false);
-  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [isPopupConfirmActionOpen, setIsPopupConfirmActionOpen] = React.useState({isOpen: false, card: {}});
-  const [cards, setCards] = React.useState([])
   const [isCardOpened, setIsCardOpened] = React.useState(null);
-
-  React.useEffect(() => {
-    api
-    .getInitialCards()
-    .then((res) => {
-      setCards(res);
-    })
-    .catch(console.error);
-  }, []);
 
   function handleEditAvatarClick() {
     setIsPopupEditAvatarOpen(true);
@@ -38,19 +24,22 @@ function App() {
   }
   function handleOpenImageClick(card) {
     setIsCardOpened(card)
-    setIsImagePopupOpen(true);
   }
   function handleDeleteClick(card) {
-    setIsPopupConfirmActionOpen({ isOpen: true, card: card });
+    setIsPopupConfirmActionOpen({ isOpen: false, card: card });
   }
-  function deleteCard(card) {
-    setCards((state) => state.filter((c) => c._id !== card._id))
+
+  function editProfile() {
+
   }
+
+
+
   function closeAllPopups() {
     setIsPopupEditAvatarOpen(false);
     setIsPopupEditProfileOpen(false);
     setIsPopupAddPlaceOpen(false);
-    setIsImagePopupOpen(false)
+    setIsCardOpened(null)
     setIsPopupConfirmActionOpen({isOpen: false, card: {}});
   }
   function closeCLickOverlay(evt) {
@@ -58,12 +47,10 @@ function App() {
       closeAllPopups();
     }
   }
-
   return (
     <>
       <Header />
       <Main
-        cards={cards}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
@@ -72,33 +59,97 @@ function App() {
       />
       <Footer />
 
-      <PopupEditProfile
+      <PopupWithForm
+        name="edit"
+        title="Редактировать профиль"
+        textBtn="Сохранить"
         isOpen={isPopupEditProfileOpen}
         onClose={closeAllPopups}
         onCloseOverlay={closeCLickOverlay}
-      />
-      <PopupEditAvatar
+        onSubmit={editProfile}>
+        <input
+          id="username"
+          name="username"
+          placeholder="Имя"
+          className={`popup__input popup-edit__input-name`}
+          required
+          minLength={2}
+          maxLength={40}
+        />
+        <span className="form__input-error username-error"></span>
+        <input
+          id="description"
+          name="description"
+          placeholder="Вид деятельности"
+          className={`popup__input popup-edit__input-description`}
+          required
+          minLength={2}
+          maxLength={200}
+        />
+        <span className="form__input-error description-error"></span>
+      </PopupWithForm>
+
+      <PopupWithForm
+        name="avatar"
+        title="Редактировать аватар"
+        textBtn="Сохранить"
         isOpen={isPopupEditAvatarOpen}
         onClose={closeAllPopups}
-        onCloseOverlay={closeCLickOverlay}
-      />
-      <PopupAddPlace
+        onCloseOverlay={closeCLickOverlay}>
+        <input
+          id="urlavatar"
+          type="url"
+          name="urlavatar"
+          placeholder="Ссылка на картинку"
+          className="popup__input popup-avatar__input-link"
+          required
+          minLength={2}
+        />
+        <span className="form__input-error urlavatar-error"></span>
+      </PopupWithForm>
+
+      <PopupWithForm
+        name="add"
+        title="Новое место"
+        textBtn="Добавить"
         isOpen={isPopupAddPlaceOpen}
         onClose={closeAllPopups}
         onCloseOverlay={closeCLickOverlay}
-        cards={cards}
-        setCards={setCards}
-      />
-      <PopupConfirmAction
+        onSubmit={editProfile}>
+        <input
+          id="name"
+          name="name"
+          placeholder="Название"
+          className="popup__input popup-add__input-name"
+          required
+          minLength={2}
+          maxLength={30}
+        />
+        <span className="form__input-error name-error"></span>
+        <input
+          id="url"
+          type="url"
+          name="url"
+          placeholder="Ссылка на картинку"
+          className="popup__input popup-add__input-link"
+          required
+          minLength={2}
+        />
+        <span className="form__input-error url-error"></span>
+      </PopupWithForm>
+
+      <PopupWithForm
+        name="delete"
+        title="Вы уверены?"
+        textBtn="Удалить"
         isOpen={isPopupConfirmActionOpen.isOpen}
-        card={isPopupConfirmActionOpen.card}
         onClose={closeAllPopups}
         onCloseOverlay={closeCLickOverlay}
-        onDeleteCard={deleteCard}
-      />
+        onSubmit={() => {deleteCard(isPopupConfirmActionOpen.card)}}> 
+      </PopupWithForm>
+
       <ImagePopup
         card={isCardOpened}
-        isOpen={isImagePopupOpen}
         onClose={closeAllPopups}
         onCloseOverlay={closeCLickOverlay}
       />
