@@ -1,5 +1,4 @@
 import React from 'react';
-import api from './Api.js'
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
@@ -28,12 +27,6 @@ function App() {
   function handleDeleteClick(card) {
     setIsPopupConfirmActionOpen({ isOpen: false, card: card });
   }
-
-  function editProfile() {
-
-  }
-
-
 
   function closeAllPopups() {
     setIsPopupEditAvatarOpen(false);
@@ -65,8 +58,7 @@ function App() {
         textBtn="Сохранить"
         isOpen={isPopupEditProfileOpen}
         onClose={closeAllPopups}
-        onCloseOverlay={closeCLickOverlay}
-        onSubmit={editProfile}>
+        onCloseOverlay={closeCLickOverlay}>
         <input
           id="username"
           name="username"
@@ -114,8 +106,7 @@ function App() {
         textBtn="Добавить"
         isOpen={isPopupAddPlaceOpen}
         onClose={closeAllPopups}
-        onCloseOverlay={closeCLickOverlay}
-        onSubmit={editProfile}>
+        onCloseOverlay={closeCLickOverlay}>
         <input
           id="name"
           name="name"
@@ -144,8 +135,7 @@ function App() {
         textBtn="Удалить"
         isOpen={isPopupConfirmActionOpen.isOpen}
         onClose={closeAllPopups}
-        onCloseOverlay={closeCLickOverlay}
-        onSubmit={() => {deleteCard(isPopupConfirmActionOpen.card)}}> 
+        onCloseOverlay={closeCLickOverlay}>
       </PopupWithForm>
 
       <ImagePopup

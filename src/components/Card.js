@@ -1,15 +1,10 @@
-function Card({user, card, onCardOpen, onCardLike, onDeleteClick}){
-  function handleOpenClick() {
-    onCardOpen(card);
+function Card({userId, card, onCardOpen, onCardLike, onDeleteClick}) {
+  function handleCardLike() {
+    onCardLike(card, isLiked)
   }
-  function handleCardLikeClick() {
-    onCardLike(card);
-  }
-  function handleDeleteClick() {
-    onDeleteClick(card);
-  }
-  const isOwner = (user._id === card.owner._id)
-  const isLiked = card.likes.some(like => (like._id === user._id));
+
+  const isOwner = (userId === card.owner._id)
+  const isLiked = card.likes.some(like => (like._id === userId));
   return (
     <li className="elements__list-item">
       <article className="element">
@@ -17,14 +12,14 @@ function Card({user, card, onCardOpen, onCardLike, onDeleteClick}){
           src={card.link}
           alt={card.name}
           className="element__img"
-          onClick={handleOpenClick}
+          onClick={onCardOpen}
         />
-        {isOwner && <button type="button" className="element__delete-btn" onClick={handleDeleteClick}></button>}
+        {isOwner && <button type="button" className="element__delete-btn" onClick={onDeleteClick}></button>}
         <div className="element__caption">
           <h2 className="element__text">{card.name}</h2>
-          <div className="element__like-container">
-            <button type="button" className={'element__like' + (isLiked && ' active')}></button>
-            <p className="element__like-count" onClick={handleCardLikeClick}></p>
+          <div className="element__like-container" onClick={handleCardLike}>
+            <button type="button" className={'element__like' + (isLiked ? ' element__like_active' : '')}></button>
+            <p className="element__like-count">{card.likes.length}</p>
           </div>
         </div>
       </article>
