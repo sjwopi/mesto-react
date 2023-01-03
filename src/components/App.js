@@ -48,7 +48,6 @@ function App() {
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
         onCardOpen={handleOpenImageClick}
-        onDeleteClick={handleDeleteClick}
       />
       <Footer />
 
