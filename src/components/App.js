@@ -6,6 +6,7 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js'
 import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarePopup from './EditAvatarPopup.js'
 import ImagePopup from './ImagePopup.js';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
   const [isCardOpened, setIsCardOpened] = React.useState(null);
 
   const [cards, setCards] = React.useState([]);
-  const [currentUser, setCorrentUser] = React.useState({});
+  const [currentUser, setCurrentUser] = React.useState({});
 
   React.useEffect(() => {
     api
@@ -28,7 +29,7 @@ function App() {
     api
       .getUserInfo()
       .then((res) => {
-        setCorrentUser(res);
+        setCurrentUser(res);
       })
       .catch(console.error)
   }, []);
@@ -89,6 +90,14 @@ function App() {
       })
       .catch(console.error);
   }
+  function handleUpdateAvatar(avatar) {
+    api.editAvatar(avatar)
+      .then((newUserInfo) => {
+        setCurrentUser(newUserInfo);
+        closeAllPopups();
+      })
+      .catch(console.error);
+  }
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
@@ -113,27 +122,8 @@ function App() {
         isOpen={isPopupEditAvatarOpen}
         onClose={closeAllPopups}
         onCloseOverlay={closeCLickOverlay}
-        onUpdateUser={handleUpdateAvatar}
+        onUpdateAvatar={handleUpdateAvatar}
       />
-
-      <PopupWithForm
-        name="avatar"
-        title="Редактировать аватар"
-        textBtn="Сохранить"
-        isOpen={isPopupEditAvatarOpen}
-        onClose={closeAllPopups}
-        onCloseOverlay={closeCLickOverlay}>
-        <input
-          id="urlavatar"
-          type="url"
-          name="urlavatar"
-          placeholder="Ссылка на картинку"
-          className="popup__input popup-avatar__input-link"
-          required
-          minLength={2}
-        />
-        <span className="form__input-error urlavatar-error"></span>
-      </PopupWithForm>
 
       <PopupWithForm
         name="add"

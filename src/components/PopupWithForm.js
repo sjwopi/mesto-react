@@ -5,6 +5,7 @@ function PopupWithForm({
   isOpen,
   onClose,
   onCloseOverlay,
+  onSubmit,
   children
 }) {
   return (
@@ -27,6 +28,7 @@ function PopupWithForm({
           type="submit"
           value={textBtn}
           className={`popup__save-form popup-${name}__save-form`}
+          onClick={onSubmit}
         />
         <button
           type="button"

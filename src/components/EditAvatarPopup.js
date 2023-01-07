@@ -1,13 +1,18 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
-function PopupEditAvatar({ isOpen, onClose, onCloseOverlay, onUpdateAvatar}) {
-  const [avatar, setAvatar] = React.useState('')
+function EditAvatarPopup({ isOpen, onClose, onCloseOverlay, onUpdateAvatar}) {
+  const avatarRef = React.useRef();
+  React.useEffect(() => {
+    avatarRef.current.value = "";
+  }, [isOpen]);
 
-  function handleAvatarChange(evt) {
-    setAvatar(evt.target.value)
+  function handleSubmit(event) {
+    event.preventDefault();
+    onUpdateAvatar({
+      avatar: avatarRef.current.value,
+    });
   }
-  
   return (
     <PopupWithForm
       name="avatar"
@@ -16,7 +21,7 @@ function PopupEditAvatar({ isOpen, onClose, onCloseOverlay, onUpdateAvatar}) {
       isOpen={isOpen}
       onClose={onClose}
       onCloseOverlay={onCloseOverlay}
-      onSubmit={handleUpdateAvatar}
+      onSubmit={handleSubmit}
     >
       <input
         id="urlavatar"
@@ -26,11 +31,11 @@ function PopupEditAvatar({ isOpen, onClose, onCloseOverlay, onUpdateAvatar}) {
         className="popup__input popup-avatar__input-link"
         required
         minLength={2}
-        onInput={handleAvatarChange}
+        ref={avatarRef}
       />
       <span className="form__input-error urlavatar-error"></span>
     </PopupWithForm>
   );
 }
 
-export default PopupEditAvatar;
+export default EditAvatarPopup;
