@@ -1,8 +1,11 @@
 import React from 'react';
+import api from '../utils/api.js'
+import CurrentUserContext from '../contexts/CurrentUserContext.js';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js'
+import EditProfilePopup from './EditProfilePopup.js';
 import ImagePopup from './ImagePopup.js';
 
 function App() {
@@ -11,6 +14,24 @@ function App() {
   const [isPopupAddPlaceOpen, setIsPopupAddPlaceOpen] = React.useState(false);
   const [isPopupConfirmActionOpen, setIsPopupConfirmActionOpen] = React.useState({isOpen: false, card: {}});
   const [isCardOpened, setIsCardOpened] = React.useState(null);
+
+  const [cards, setCards] = React.useState([]);
+  const [currentUser, setCorrentUser] = React.useState({});
+
+  React.useEffect(() => {
+    api
+    .getInitialCards()
+    .then((res) => {
+      setCards(res);
+    })
+    .catch(console.error);
+    api
+      .getUserInfo()
+      .then((res) => {
+        setCorrentUser(res);
+      })
+      .catch(console.error)
+  }, []);
 
   function handleEditAvatarClick() {
     setIsPopupEditAvatarOpen(true);
@@ -24,10 +45,6 @@ function App() {
   function handleOpenImageClick(card) {
     setIsCardOpened(card)
   }
-  function handleDeleteClick(card) {
-    setIsPopupConfirmActionOpen({ isOpen: false, card: card });
-  }
-
   function closeAllPopups() {
     setIsPopupEditAvatarOpen(false);
     setIsPopupEditProfileOpen(false);
@@ -40,45 +57,64 @@ function App() {
       closeAllPopups();
     }
   }
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    if (!isLiked) {
+      api
+        .setLike(card._id)
+        .then((newCard) => { setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+      });
+    } else {
+      api
+      .deleteLike(card._id)
+      .then((newCard) => { setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+    });
+    }
+  }
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((crd) => crd._id !== card._id));
+        closeAllPopups();
+      })
+      .catch(console.error);
+  }
+  function handleUpdateUser(userInfo) {
+    api.editUserInfo(userInfo)
+      .then((newUserInfo) => {
+        setCurrentUser(newUserInfo);
+        closeAllPopups();
+      })
+      .catch(console.error);
+  }
   return (
-    <>
+    <CurrentUserContext.Provider value={currentUser}>
       <Header />
       <Main
+        cards={cards}
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
         onCardOpen={handleOpenImageClick}
+        onCardLike={handleCardLike}
+        onCardDelete={handleCardDelete}
       />
       <Footer />
 
-      <PopupWithForm
-        name="edit"
-        title="Редактировать профиль"
-        textBtn="Сохранить"
+      <EditProfilePopup
         isOpen={isPopupEditProfileOpen}
         onClose={closeAllPopups}
-        onCloseOverlay={closeCLickOverlay}>
-        <input
-          id="username"
-          name="username"
-          placeholder="Имя"
-          className={`popup__input popup-edit__input-name`}
-          required
-          minLength={2}
-          maxLength={40}
-        />
-        <span className="form__input-error username-error"></span>
-        <input
-          id="description"
-          name="description"
-          placeholder="Вид деятельности"
-          className={`popup__input popup-edit__input-description`}
-          required
-          minLength={2}
-          maxLength={200}
-        />
-        <span className="form__input-error description-error"></span>
-      </PopupWithForm>
+        onCloseOverlay={closeCLickOverlay}
+        onUpdateUser={handleUpdateUser}
+      />
+      <EditAvatarePopup
+        isOpen={isPopupEditAvatarOpen}
+        onClose={closeAllPopups}
+        onCloseOverlay={closeCLickOverlay}
+        onUpdateUser={handleUpdateAvatar}
+      />
 
       <PopupWithForm
         name="avatar"
@@ -142,7 +178,7 @@ function App() {
         onClose={closeAllPopups}
         onCloseOverlay={closeCLickOverlay}
       />
-    </>
+    </CurrentUserContext.Provider>
   );
 }
 export default App;
