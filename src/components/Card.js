@@ -24,7 +24,7 @@ function Card({card, onCardOpen, onCardLike, onCardDelete}) {
           className="element__img"
           onClick={handleCardClick}
         />
-        {isOwn && <button type="button" class="element__delete-btn" onClick={handleCardDelete}></button>}
+        {isOwn && <button type="button" className="element__delete-btn" onClick={handleCardDelete}></button>}
 
         <div className="element__caption">
           <h2 className="element__text">{card.name}</h2>

@@ -7,6 +7,7 @@ import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js'
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarePopup from './EditAvatarPopup.js'
+import AddPlacePopup from './AddPlacePopup.js';
 import ImagePopup from './ImagePopup.js';
 
 function App() {
@@ -98,6 +99,15 @@ function App() {
       })
       .catch(console.error);
   }
+  function handleAddNewPlace(card) {
+    api
+      .createCard(card)
+      .then((newCard) => {
+        setCards([newCard, ...cards])
+        closeAllPopups();
+      })
+      .catch(console.error);
+  }
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
@@ -124,35 +134,12 @@ function App() {
         onCloseOverlay={closeCLickOverlay}
         onUpdateAvatar={handleUpdateAvatar}
       />
-
-      <PopupWithForm
-        name="add"
-        title="Новое место"
-        textBtn="Добавить"
+      <AddPlacePopup
         isOpen={isPopupAddPlaceOpen}
         onClose={closeAllPopups}
-        onCloseOverlay={closeCLickOverlay}>
-        <input
-          id="name"
-          name="name"
-          placeholder="Название"
-          className="popup__input popup-add__input-name"
-          required
-          minLength={2}
-          maxLength={30}
-        />
-        <span className="form__input-error name-error"></span>
-        <input
-          id="url"
-          type="url"
-          name="url"
-          placeholder="Ссылка на картинку"
-          className="popup__input popup-add__input-link"
-          required
-          minLength={2}
-        />
-        <span className="form__input-error url-error"></span>
-      </PopupWithForm>
+        onCloseOverlay={closeCLickOverlay}
+        onAddPlace={handleAddNewPlace}
+      />
 
       <PopupWithForm
         name="delete"
