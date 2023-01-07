@@ -19,17 +19,18 @@ function PopupWithForm({
         <form
           name={`${name}-form`}
           className={`form popup__form popup-${name}__form`}
+          onSubmit={onSubmit}
           noValidate
         >
           {children}
+          <button
+            name="save-button"
+            type="submit"
+            className={`popup__save-form popup-${name}__save-form`}
+            onClick={onSubmit}
+          >{textBtn}</button>
         </form>
-        <input
-          name="save-button"
-          type="submit"
-          value={textBtn}
-          className={`popup__save-form popup-${name}__save-form`}
-          onClick={onSubmit}
-        />
+
         <button
           type="button"
           className={`popup__close-btn popup-${name}__close-btn`}

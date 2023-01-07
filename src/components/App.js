@@ -65,12 +65,14 @@ function App() {
     if (!isLiked) {
       api
         .setLike(card._id)
-        .then((newCard) => { setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+        .then((newCard) => { setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)))
+        .catch(console.error);
       });
     } else {
       api
       .deleteLike(card._id)
-      .then((newCard) => { setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+      .then((newCard) => { setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)))
+      .catch(console.error);
     });
     }
   }

@@ -1,4 +1,5 @@
 .popup-card {
+  background-color: rgba(0, 0, 0, 0.9);
   padding: 12.5vh 12.5vw;
   display: flex;
   align-items: center;
